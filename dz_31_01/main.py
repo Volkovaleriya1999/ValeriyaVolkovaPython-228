@@ -38,7 +38,7 @@ class DictOfCountry:
         with open(file, 'w') as f:
             for key, value in dict.items():
                 data.append([key, value])
-            json.dump(data, f, indent=2)
+            json.dump(data, f,  indent=2)
 
     @staticmethod
     def upload_countries(file):
