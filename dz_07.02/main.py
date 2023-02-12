@@ -9,11 +9,12 @@ def get_html(url):
 
 
 def write_csv(data):
-    with open('games.csv', 'a') as f:
+    with open('games.csv', 'a', encoding='utf-8-sig') as f:
         writer = csv.writer(f, lineterminator='\r', delimiter=';')
         writer.writerow((data['name'],
                          data['author'],
                          data['snippet'],
+                         data['date'],
                          data['url']))
 
 
@@ -26,6 +27,8 @@ def get_data(html):
             name = element.find('a', class_='_card__title_8sstg_1 _card__title--has-subtitle_8sstg_1').text.strip()
         except ValueError:
             name = ''
+        except AttributeError:
+            name = ''
 
         try:
             author = element.find('a').text.strip()
@@ -36,6 +39,13 @@ def get_data(html):
             snippet = element.find('span', class_='_card__subtitle_8sstg_1').text
         except ValueError:
             snippet = ''
+        except AttributeError:
+            snippet = ''
+
+        try:
+            date = element.find('section', class_='_card__date_8sstg_1').text.strip()
+        except ValueError:
+            date = ''
 
         try:
             url = element.find('section', class_='_card__content_8sstg_390').find('a')['href']
@@ -43,11 +53,13 @@ def get_data(html):
         except ValueError:
             url1 = ''
 
+
         data = {
             'name': name,
             'author': author,
             'snippet': snippet,
             'url': url1,
+            'date': date
         }
         write_csv(data)
 
@@ -60,3 +72,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
